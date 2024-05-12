@@ -1,0 +1,76 @@
+  CREATE TABLE emp_log (
+    ->     action VARCHAR(50),
+    ->     employee_id INT,
+    ->     employee_name VARCHAR(100),
+    ->     salary DECIMAL(10, 2)
+    -> );
+
+
+DELIMITER //
+mysql> CREATE TRIGGER before_insert_salary
+    -> BEFORE INSERT ON employees
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.salary IS NULL THEN
+    ->         SET NEW.salary = 50000; -- Default salary
+    ->     END IF;
+    -> END;
+    -> //
+
+
+ CREATE TRIGGER AF_INSRT
+     AFTER INSERT ON employees
+     FOR EACH ROW
+     BEGIN
+     INSERT INTO emp_log
+     values('insert' , NEW.employee_id , NEW.name , NEW.salary);
+     END;
+    //
+
+CREATE TRIGGER BF_upd
+     BEFORE UPDATE ON employees
+     FOR EACH ROW
+     BEGIN
+     IF NEW.salary < OLD.salary THEN
+     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'new salary cant be less than old ' ;
+END IF;
+     END;
+    //
+
+
+CREATE TRIGGER AF_upd
+     AFTER UPDATE ON employees
+     FOR EACH ROW
+     BEGIN
+          INSERT INTO emp_log
+     values('UPDATE' , NEW.employee_id , NEW.name , NEW.salary);
+END;
+    //
+
+
+CREATE TRIGGER BF_delete
+     BEFORE DELETE ON employees
+     FOR EACH ROW
+     BEGIN
+          IF OLD.salary > 13000 THEN 
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'cANT DELETE EMP WITH HIGH SALARY';
+end if;
+END;
+    //
+
+
+CREATE TRIGGER AF_DELETE
+     AFTER DELETE ON employees
+     FOR EACH ROW
+     BEGIN
+          INSERT INTO emp_log
+     values('DELETE' , OLD.employee_id , OLD.name , OLD.salary);
+END;
+    //
+
+
+
+
+
+
+
