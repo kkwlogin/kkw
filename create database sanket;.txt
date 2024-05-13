@@ -1,0 +1,194 @@
+ create database sanket;
+
+
+ use sanket
+Database changed
+ create table employee(name varchar(30),ID int,email varchar(30),phone_no int,salary decimal (10,2));
+
+ insert into employee values('sanket',1264,'sac@gmail.comh',878887,200000.25);
+Query OK, 1 row affected (0.02 sec)
+
+ insert into employee values('kaustubh',1265,'krc@gmail.comh',878887,300000.25);
+
+
+ insert into employee values('anubhav',1266,'adk@gmail.comh',878888,300000.25);
+Query OK, 1 row affected (0.00 sec)
+
+ insert into employee values('omkar',1266,'oag@gmail.comh',878885,400000.25);
+
+
+ insert into employee values('atish',1261,'adg@gmail.comh',878889,500000.25);
+Query OK, 1 row affected (0.04 sec)
+
+ select * from employee;
++----------+------+----------------+----------+-----------+
+| name     | ID   | email          | phone_no | salary    |
++----------+------+----------------+----------+-----------+
+| sanket   | 1264 | sac@gmail.comh |   878887 | 200000.25 |
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 |
+| omkar    | 1266 | oag@gmail.comh |   878885 | 400000.25 |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 |
++----------+------+----------------+----------+-----------+
+5 rows in set (0.00 sec)
+
+ update employee set phone_no=878881 where ID=1264;
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ select avg(salary) as avragesalary from employee;
++---------------+
+| avragesalary  |
++---------------+
+| 340000.250000 |
++---------------+
+1 row in set (0.00 sec)
+
+ select sum(salary) as totalsalary from employee;
++-------------+
+| totalsalary |
++-------------+
+|  1700001.25 |
++-------------+
+1 row in set (0.00 sec)
+
+ alter table employee add column joining_date date;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+ update employee set join_date=current_date where id=1264;
+ERROR 1054 (42S22): Unknown column 'join_date' in 'field list'
+ select * from employee;
++----------+------+----------------+----------+-----------+--------------+
+| name     | ID   | email          | phone_no | salary    | joining_date |
++----------+------+----------------+----------+-----------+--------------+
+| sanket   | 1264 | sac@gmail.comh |   878881 | 200000.25 | NULL         |
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 | NULL         |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 | NULL         |
+| omkar    | 1266 | oag@gmail.comh |   878885 | 400000.25 | NULL         |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 | NULL         |
++----------+------+----------------+----------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+ update employee set joining_date=current_date where id=1264;
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update employee set joining_date=current_date-1 where id=1265;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update employee set joining_date=current_date-15 where id=1266;
+ERROR 1292 (22007): Incorrect date value: '20240498' for column 'joining_date' at row 3
+ update employee set joining_date=current_date-4 where id=1266;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+ update employee set joining_date=current_date-5 where id=1261;
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update employee set ID=1263 where name=omkar;
+ERROR 1054 (42S22): Unknown column 'omkar' in 'where clause'
+ update employee set ID=1263 where phone_no=878885;
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update employee set joining_date=current_date-6 where id=1263;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ select * from employee;
++----------+------+----------------+----------+-----------+--------------+
+| name     | ID   | email          | phone_no | salary    | joining_date |
++----------+------+----------------+----------+-----------+--------------+
+| sanket   | 1264 | sac@gmail.comh |   878881 | 200000.25 | 2024-05-13   |
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 | 2024-05-12   |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 | 2024-05-09   |
+| omkar    | 1263 | oag@gmail.comh |   878885 | 400000.25 | 2024-05-07   |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 | 2024-05-08   |
++----------+------+----------------+----------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+ create view contact_details as select *from employee where salary = n
+ot null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null' at line 1
+ create view highest_salary as select * from employees where salary>300000;
+ERROR 1146 (42S02): Table 'sanket.employees' doesn't exist
+ create view highest_salary as select * from employee where salary>300
+000;
+Query OK, 0 rows affected (0.02 sec)
+
+ select * from highest_salary;
++----------+------+----------------+----------+-----------+--------------+
+| name     | ID   | email          | phone_no | salary    | joining_date |
++----------+------+----------------+----------+-----------+--------------+
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 | 2024-05-12   |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 | 2024-05-09   |
+| omkar    | 1263 | oag@gmail.comh |   878885 | 400000.25 | 2024-05-07   |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 | 2024-05-08   |
++----------+------+----------------+----------+-----------+--------------+
+4 rows in set (0.01 sec)
+
+ create table new_employee;
+ERROR 4028 (HY000): A table must have at least one visible column.
+ create table new_employee(name varchar(23),ID int,salary decimal (20,
+3));
+Query OK, 0 rows affected (0.03 sec)
+
+ insert into new_employee values('kimbol', 1234,200000);
+
+
+ insert into new_employee values('shubham', 1235,300000);
+
+
+ insert into new_employee values('bhavishya', 1236,500000);
+
+
+ select *from new_employee;
++-----------+------+------------+
+| name      | ID   | salary     |
++-----------+------+------------+
+| kimbol    | 1234 | 200000.000 |
+| shubham   | 1235 | 300000.000 |
+| bhavishya | 1236 | 500000.000 |
++-----------+------+------------+
+3 rows in set (0.00 sec)
+
+ select * from employee inner join new_employee on employee.salary=new
+_employee.salary;
+Empty set (0.04 sec)
+
+ update new_employee set salary=200000.25 where ID=1234;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update new_employee set salary=300000.25 where ID=1235;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ update new_employee set salary=500000.25 where ID=1236;
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ select * from employee inner join new_employee on employee.salary=new_employee.salary;
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+| name     | ID   | email          | phone_no | salary    | joining_date | name      | ID   | salary     |
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+| sanket   | 1264 | sac@gmail.comh |   878881 | 200000.25 | 2024-05-13   | kimbol    | 1234 | 200000.250 |
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 | 2024-05-12   | shubham   | 1235 | 300000.250 |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 | 2024-05-09   | shubham   | 1235 | 300000.250 |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 | 2024-05-08   | bhavishya | 1236 | 500000.250 |
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+4 rows in set (0.00 sec)
+       ^C
+ select * from employee right join new_employee on employee.salary=new_employee.salary;
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+| name     | ID   | email          | phone_no | salary    | joining_date | name      | ID   | salary     |
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+| sanket   | 1264 | sac@gmail.comh |   878881 | 200000.25 | 2024-05-13   | kimbol    | 1234 | 200000.250 |
+| anubhav  | 1266 | adk@gmail.comh |   878888 | 300000.25 | 2024-05-09   | shubham   | 1235 | 300000.250 |
+| kaustubh | 1265 | krc@gmail.comh |   878887 | 300000.25 | 2024-05-12   | shubham   | 1235 | 300000.250 |
+| atish    | 1261 | adg@gmail.comh |   878889 | 500000.25 | 2024-05-08   | bhavishya | 1236 | 500000.250 |
++----------+------+----------------+----------+-----------+--------------+-----------+------+------------+
+4 rows in set (0.00 sec)
